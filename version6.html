@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sofia Marín</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #000000;
+      --white:    #ffffff;
+      --dim:      rgba(255,255,255,0.42);
+      --dimmer:   rgba(255,255,255,0.18);
+      --ghost:    rgba(255,255,255,0.07);
+      --gap:      14px;
+      --font:     'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none; /* custom cursor */
+    }
+
+    /* ═══════════════════════════════════════
+       CUSTOM CURSOR
+    ═══════════════════════════════════════ */
+    .cursor {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor.is-hovering {
+      width: 48px;
+      height: 48px;
+      opacity: 0.15;
+    }
+
+    /* ═══════════════════════════════════════
+       NAV — ultra-thin fixed strip
+    ═══════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2rem;
+      /* No background — nav floats over everything */
+    }
+
+    .nav-logo {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      mix-blend-mode: difference;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      mix-blend-mode: difference;
+    }
+
+    .nav-right a {
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-right a:hover { color: var(--white); }
+
+    /* Thin horizontal rule under nav (barely visible) */
+    nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 2rem; right: 2rem;
+      height: 1px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* ═══════════════════════════════════════
+       HERO — fixed background (parallax base)
+    ═══════════════════════════════════════ */
+    .hero {
+      position: fixed;          /* Stays pinned while content scrolls over */
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #0a0a0a;
+      z-index: 0;               /* Below all scrollable content */
+    }
+
+    /* Responsive background image */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('hero-desktop.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
+    @media (max-width: 640px) {
+      .hero-bg {
+        background-image: url('hero-mobile.jpg');
+        background-position: center center;
+      }
+    }
+
+    /* vignette */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0,0,0,0.75) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,0,0,0.45) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 2rem 2.5rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Huge name — the entire hero IS the nameplate */
+    .hero-name {
+      font-size: clamp(4.5rem, 14vw, 13rem);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 0.88;
+      color: var(--white);
+      display: block;
+      /* Text slightly split across two lines for drama */
+    }
+
+    .hero-meta {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-role {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .hero-cta {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.22);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .hero-cta:hover { color: var(--white); border-color: var(--white); }
+
+    /* Scroll indicator — thin vertical line on right edge */
+    .scroll-indicator {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 2;
+    }
+    .scroll-indicator span {
+      font-size: 0.52rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      writing-mode: vertical-rl;
+    }
+    .scroll-line-indicator {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.35));
+      animation: grow-line 2s ease-in-out infinite alternate;
+    }
+    @keyframes grow-line {
+      from { transform: scaleY(0.4); opacity: 0.3; }
+      to   { transform: scaleY(1);   opacity: 0.8; }
+    }
+
+    /* ═══════════════════════════════════════
+       HERO SPACER — reserves 100vh so hero
+       is the only thing visible on load
+    ═══════════════════════════════════════ */
+    .hero-spacer {
+      height: 100vh;
+      position: relative;
+      z-index: 1;               /* Sits above fixed hero but is transparent */
+      pointer-events: none;     /* Clicks pass through to hero-content */
+      background: transparent;
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLLABLE CONTENT — slides over hero
+    ═══════════════════════════════════════ */
+    #trabajo,
+    #sobre-mi,
+    #contacto {
+      position: relative;
+      z-index: 1;               /* Above fixed hero (z-index: 0) */
+      background: #000;         /* Opaque — hides hero as it scrolls under */
+    }
+
+    /* ═══════════════════════════════════════
+       WORK SECTION
+    ═══════════════════════════════════════ */
+    #trabajo { margin-top: 0; }
+
+    .section-bar {
+      padding: 4.5rem 2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .section-label-text {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── SYMMETRIC 2-COLUMN GRID — sarahkhorbtli style ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+      padding: 0 3.5rem;
+    }
+
+    .video-card        { grid-column: span 1; }
+    .video-card.wide   { grid-column: span 2; }
+
+    /* ── SINGLE CARD ── */
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      background: #0d0d0d;
+    }
+
+    .video-card video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Keep 16:9 for normal cards, 2.35:1 for full-width */
+      aspect-ratio: 16 / 9;
+      filter: saturate(0.8) brightness(0.9);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.5s ease;
+    }
+
+    .video-card:hover video {
+      transform: scale(1.04);
+      filter: saturate(1) brightness(1);
+    }
+
+    /* Reveal overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;     /* Clicks pasan al iframe/video debajo */
+    }
+
+    /* iframe embed — mantiene 16:9 sin distorsión */
+    .video-card iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* ── YouTube facade ── */
+    .yt-facade {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .yt-facade::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.3s;
+    }
+
+    .yt-facade:hover::after { background: rgba(0,0,0,0.1); }
+
+    .yt-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 58px; height: 58px;
+      border: 1.5px solid rgba(255,255,255,0.75);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      transition: border-color 0.3s, transform 0.3s, background 0.3s;
+    }
+
+    .yt-facade:hover .yt-play {
+      border-color: var(--white);
+      transform: translate(-50%, -50%) scale(1.1);
+      background: rgba(0,0,0,0.45);
+    }
+
+    .yt-play svg {
+      width: 18px; height: 18px;
+      fill: var(--white);
+      margin-left: 3px; /* centrado óptico del triángulo */
+    }
+
+    .video-card:hover .card-overlay { opacity: 1; }
+
+    .card-meta {
+      transform: translateY(10px);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .video-card:hover .card-meta { transform: translateY(0); }
+
+    .card-cat {
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-title {
+      font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.15;
+    }
+
+    .card-year {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 0.3rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* Small card index number (top-left) — always visible */
+    .card-index {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.22);
+      z-index: 2;
+    }
+
+    /* ═══════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════ */
+    #sobre-mi {
+      padding: 9rem 2rem 8rem;
+      max-width: 900px;
+    }
+
+    .about-eyebrow {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      display: block;
+      margin-bottom: 3.5rem;
+    }
+
+    .about-statement {
+      font-size: clamp(2rem, 5.5vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      color: var(--white);
+      margin-bottom: 3rem;
+    }
+
+    .about-statement .muted {
+      color: rgba(255,255,255,0.2);
+    }
+
+    .about-body {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.38);
+      line-height: 1.9;
+      max-width: 48ch;
+      border-left: 1px solid rgba(255,255,255,0.08);
+      padding-left: 1.5rem;
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 4rem;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .stat-num {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      margin-top: 0.4rem;
+    }
+
+    /* ═══════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════ */
+    #contacto {
+      padding: 6rem 2rem 7rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .contact-eyebrow {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      display: block;
+      margin-bottom: 2rem;
+    }
+
+    .contact-email {
+      display: block;
+      font-size: clamp(1.6rem, 5.5vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      color: var(--white);
+      text-decoration: none;
+      margin-bottom: 4rem;
+      /* Underline that grows from left */
+      position: relative;
+    }
+
+    .contact-email::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0%; height: 1px;
+      background: var(--white);
+      transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .contact-email:hover::after { width: 100%; }
+
+    .contact-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .social-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .social-row a {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+      width: fit-content;
+    }
+    .social-row a:hover { color: var(--white); }
+
+    .copyright {
+      font-size: 0.58rem;
+      color: rgba(255,255,255,0.1);
+      letter-spacing: 0.1em;
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 1023px) {
+      .video-grid { padding: 0 2rem; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-right a { display: none; }
+      .nav-right a:last-child { display: block; }
+
+      .hero-content { padding: 0 1.25rem 2rem; }
+      .hero-name { font-size: clamp(3.5rem, 18vw, 6rem); }
+      .scroll-indicator { display: none; }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1.25rem;
+      }
+
+      #sobre-mi { padding: 5rem 1.25rem 4rem; }
+      .about-stats { flex-direction: column; gap: 2rem; }
+
+      #contacto { padding: 4rem 1.25rem 5rem; }
+      .contact-footer { flex-direction: column; gap: 2.5rem; align-items: flex-start; }
+      .copyright { text-align: left; }
+
+      .section-bar { padding: 4rem 1.25rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- ══════════════════════════════════════
+       NAV
+  ══════════════════════════════════════ -->
+  <nav>
+    <a class="nav-logo" href="#">Ayerim</a>
+    <div class="nav-right">
+      <a href="#trabajo">Trabajo</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO  ·  100vh full-bleed video
+  ══════════════════════════════════════ -->
+  <section class="hero">
+
+    <!-- Responsive background image — swap src in CSS for desktop / mobile -->
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <span class="hero-name">Ayerim<br>Parra</span>
+      <div class="hero-meta">
+        <span class="hero-role">Videógrafa &amp; Directora Visual · Madrid</span>
+        <a class="hero-cta" href="#contacto">Hablemos →</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-line-indicator"></div>
+      <span>Scroll</span>
+    </div>
+
+  </section>
+
+  <!-- Spacer: keeps hero visible on load; content begins after 100vh -->
+  <div class="hero-spacer"></div>
+
+  <!-- ══════════════════════════════════════
+       TRABAJO  ·  Asymmetric always-on grid
+  ══════════════════════════════════════ -->
+  <section id="trabajo">
+
+    <div class="section-bar">
+      <span class="section-label-text">Trabajo selecto</span>
+      <span class="section-label-text">06 — 2024 / 2025</span>
+    </div>
+
+    <div class="video-grid">
+
+      <div class="video-card">
+        <span class="card-index">01</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/2yYhRPN9fdk?si=GuOGlQsq0osXFEih&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/2yYhRPN9fdk/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">2022 Shortfilm</p>
+            <p class="card-title">Mireyita</p>
+            <p class="card-year">2022</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal -->
+      <div class="video-card">
+        <span class="card-index">02</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/uH1dLidfCPE?si=H5XSam-bIHQjnkjK&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/uH1dLidfCPE/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">2025 Corporative</p>
+            <p class="card-title">SATA Congress</p>
+            <p class="card-year">2025</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal -->
+      <div class="video-card wide">
+        <span class="card-index">03</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/nCcbyxSG20c?si=hYNxf3-7ya7KEr4C&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/nCcbyxSG20c/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">2025 Documentary</p>
+            <p class="card-title">You married your bestfriend</p>
+            <p class="card-year">2025</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal -->
+
+      <!-- Normal -->
+      <div class="video-card">
+        <span class="card-index">05</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube.com/embed/dDAExTNaERo?si=qX6tS7TjPsq9Aa9q&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/dDAExTNaERo/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">2018 Shortfilm</p>
+            <p class="card-title">Lazos</p>
+            <p class="card-year">2018</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <span class="card-index">06</span>
+        <video autoplay loop muted playsinline>
+          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4" type="video/mp4" />
+        </video>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">Corporativo</p>
+            <p class="card-title">TechVerde — Identidad de Marca</p>
+            <p class="card-year">2024</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SOBRE MÍ
+  ══════════════════════════════════════ -->
+  <section id="sobre-mi">
+    <span class="about-eyebrow">Sobre mí</span>
+    <p class="about-statement">
+      Hago películas.<br>
+      <span class="muted">No videos.</span>
+    </p>
+    <p class="about-body">
+      Con más de 8 años detrás de la cámara he creado contenido para marcas de lujo,
+      documentales sociales, artistas musicales y parejas que buscan inmortalizar
+      sus momentos más importantes. Mi enfoque es simple: la imagen al servicio
+      de la emoción, nunca al revés.
+    </p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Años</div>
+      </div>
+      <div>
+        <div class="stat-num">120</div>
+        <div class="stat-label">Proyectos</div>
+      </div>
+      <div>
+        <div class="stat-num">14</div>
+        <div class="stat-label">Países</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════════ -->
+  <section id="contacto">
+    <span class="contact-eyebrow">¿Tienes un proyecto en mente?</span>
+    <a class="contact-email" href="mailto:hola@sofiamarinfilm.com">
+      hola@sofiamarinfilm.com
+    </a>
+    <div class="contact-footer">
+      <nav class="social-row" aria-label="Redes sociales">
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+        <a href="#" target="_blank" rel="noopener">Vimeo</a>
+        <a href="#" target="_blank" rel="noopener">YouTube</a>
+        <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+      <p class="copyright">
+        © 2026 Sofia Marín Film<br>
+        Madrid, España
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════ -->
+  <script>
+    /* ── Custom cursor ── */
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Smooth cursor follow
+    function animateCursor() {
+      curX += (mouseX - curX) * 0.12;
+      curY += (mouseY - curY) * 0.12;
+      cursor.style.left = curX + 'px';
+      cursor.style.top  = curY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Expand on hoverable elements
+    const hoverTargets = document.querySelectorAll('a, .video-card, button');
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
+    });
+
+    /* ── IntersectionObserver: play/pause videos off-screen ── */
+    const videoCards = document.querySelectorAll('.video-card video');
+
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.isIntersecting
+          ? entry.target.play().catch(() => {})
+          : entry.target.pause();
+      });
+    }, { threshold: 0.1 });
+
+    videoCards.forEach(v => videoObserver.observe(v));
+
+    /* ── YouTube facade: clic carga el iframe con autoplay ── */
+    document.querySelectorAll('.yt-facade').forEach(facade => {
+      facade.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = facade.dataset.src;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        iframe.setAttribute('allowfullscreen', '');
+        facade.replaceWith(iframe);
+      });
+    });
+
+    /* ── Subtle parallax on hero name ── */
+    const heroName = document.querySelector('.hero-name');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroName.style.transform = `translateY(${y * 0.18}px)`;
+        heroName.style.opacity   = 1 - (y / (window.innerHeight * 0.7));
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
+  
