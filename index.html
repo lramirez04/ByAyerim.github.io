@@ -281,7 +281,8 @@
       padding: 0 3.5rem;
     }
 
-    .video-card { grid-column: span 1; }
+    .video-card        { grid-column: span 1; }
+    .video-card.wide   { grid-column: span 2; }
 
     /* ── SINGLE CARD ── */
     .video-card {
@@ -622,9 +623,15 @@
       <!-- Normal -->
       <div class="video-card">
         <span class="card-index">02</span>
-        <video autoplay loop muted playsinline>
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4" />
-        </video>
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/uH1dLidfCPE?si=H5XSam-bIHQjnkjK&rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
         <div class="card-overlay">
           <div class="card-meta">
             <p class="card-cat">Documental</p>
@@ -635,11 +642,17 @@
       </div>
 
       <!-- Normal -->
-      <div class="video-card">
+      <div class="video-card wide">
         <span class="card-index">03</span>
-        <video autoplay loop muted playsinline>
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4" />
-        </video>
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/nCcbyxSG20c?si=hYNxf3-7ya7KEr4C&rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
         <div class="card-overlay">
           <div class="card-meta">
             <p class="card-cat">Bodas</p>
@@ -650,19 +663,6 @@
       </div>
 
       <!-- Normal -->
-      <div class="video-card">
-        <span class="card-index">04</span>
-        <video autoplay loop muted playsinline>
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4" />
-        </video>
-        <div class="card-overlay">
-          <div class="card-meta">
-            <p class="card-cat">Eventos</p>
-            <p class="card-title">Summit Creativo 2024</p>
-            <p class="card-year">2024</p>
-          </div>
-        </div>
-      </div>
 
       <!-- Normal -->
       <div class="video-card">
