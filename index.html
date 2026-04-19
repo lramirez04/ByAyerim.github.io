@@ -443,8 +443,28 @@
        ABOUT
     ═══════════════════════════════════════ */
     #sobre-mi {
-      padding: 9rem 2rem 8rem;
-      max-width: 900px;
+      padding: 9rem 3.5rem 8rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-image img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      #sobre-mi { padding: 5rem 1.25rem 4rem; }
     }
 
     .about-eyebrow {
@@ -654,6 +674,52 @@
   <div class="hero-spacer"></div>
 
   <!-- ══════════════════════════════════════
+       SOBRE MÍ
+  ══════════════════════════════════════ -->
+  <section id="sobre-mi">
+    <div class="about-grid">
+
+      <!-- Columna izquierda: foto -->
+      <div class="about-image">
+        <img src="about-photo.jpg" alt="Ayerim Parra" />
+      </div>
+
+      <!-- Columna derecha: texto -->
+      <div class="about-text">
+        <span class="about-eyebrow">Sobre mí</span>
+        <p class="about-statement">
+          Hago películas.<br>
+          <span class="muted">No videos.</span>
+        </p>
+        <p class="about-body">
+          A passionate Video Editor dedicated to the art of visual storytelling,
+          blending rhythmic precision with creative flair. Driven by an artistic vision,
+          I specialize in crafting high-impact narratives that transform raw footage
+          into compelling digital experiences, ensuring every frame is meticulously
+          edited to captivate and engage the audience.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Stats: ancho completo debajo del grid -->
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Años</div>
+      </div>
+      <div>
+        <div class="stat-num">120</div>
+        <div class="stat-label">Proyectos</div>
+      </div>
+      <div>
+        <div class="stat-num">14</div>
+        <div class="stat-label">Países</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
        TRABAJO  ·  Asymmetric always-on grid
   ══════════════════════════════════════ -->
   <section id="trabajo">
@@ -768,37 +834,6 @@
         </div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════
-       SOBRE MÍ
-  ══════════════════════════════════════ -->
-  <section id="sobre-mi">
-    <span class="about-eyebrow">Sobre mí</span>
-    <p class="about-statement">
-      Hago películas.<br>
-      <span class="muted">No videos.</span>
-    </p>
-    <p class="about-body">
-      Con más de 8 años detrás de la cámara he creado contenido para marcas de lujo,
-      documentales sociales, artistas musicales y parejas que buscan inmortalizar
-      sus momentos más importantes. Mi enfoque es simple: la imagen al servicio
-      de la emoción, nunca al revés.
-    </p>
-    <div class="about-stats">
-      <div>
-        <div class="stat-num">8+</div>
-        <div class="stat-label">Años</div>
-      </div>
-      <div>
-        <div class="stat-num">120</div>
-        <div class="stat-label">Proyectos</div>
-      </div>
-      <div>
-        <div class="stat-num">14</div>
-        <div class="stat-label">Países</div>
-      </div>
     </div>
   </section>
 
