@@ -330,6 +330,55 @@
       border: none;
     }
 
+    /* ── YouTube facade ── */
+    .yt-facade {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .yt-facade::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.3s;
+    }
+
+    .yt-facade:hover::after { background: rgba(0,0,0,0.1); }
+
+    .yt-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 58px; height: 58px;
+      border: 1.5px solid rgba(255,255,255,0.75);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      transition: border-color 0.3s, transform 0.3s, background 0.3s;
+    }
+
+    .yt-facade:hover .yt-play {
+      border-color: var(--white);
+      transform: translate(-50%, -50%) scale(1.1);
+      background: rgba(0,0,0,0.45);
+    }
+
+    .yt-play svg {
+      width: 18px; height: 18px;
+      fill: var(--white);
+      margin-left: 3px; /* centrado óptico del triángulo */
+    }
+
     .video-card:hover .card-overlay { opacity: 1; }
 
     .card-meta {
@@ -602,15 +651,13 @@
 
       <div class="video-card">
         <span class="card-index">01</span>
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/2yYhRPN9fdk?si=GuOGlQsq0osXFEih&rel=0"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          loading="lazy"
-        ></iframe>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/2yYhRPN9fdk?si=GuOGlQsq0osXFEih&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/2yYhRPN9fdk/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="card-overlay">
           <div class="card-meta">
             <p class="card-cat">Comercial</p>
@@ -623,15 +670,13 @@
       <!-- Normal -->
       <div class="video-card">
         <span class="card-index">02</span>
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/uH1dLidfCPE?si=H5XSam-bIHQjnkjK&rel=0"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          loading="lazy"
-        ></iframe>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/uH1dLidfCPE?si=H5XSam-bIHQjnkjK&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/uH1dLidfCPE/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="card-overlay">
           <div class="card-meta">
             <p class="card-cat">Documental</p>
@@ -644,15 +689,13 @@
       <!-- Normal -->
       <div class="video-card wide">
         <span class="card-index">03</span>
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/nCcbyxSG20c?si=hYNxf3-7ya7KEr4C&rel=0"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-          loading="lazy"
-        ></iframe>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/nCcbyxSG20c?si=hYNxf3-7ya7KEr4C&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/nCcbyxSG20c/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
         <div class="card-overlay">
           <div class="card-meta">
             <p class="card-cat">Bodas</p>
@@ -791,6 +834,19 @@
     }, { threshold: 0.1 });
 
     videoCards.forEach(v => videoObserver.observe(v));
+
+    /* ── YouTube facade: clic carga el iframe con autoplay ── */
+    document.querySelectorAll('.yt-facade').forEach(facade => {
+      facade.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = facade.dataset.src;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        iframe.setAttribute('allowfullscreen', '');
+        facade.replaceWith(iframe);
+      });
+    });
 
     /* ── Subtle parallax on hero name ── */
     const heroName = document.querySelector('.hero-name');
