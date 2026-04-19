@@ -252,9 +252,12 @@
     #sobre-mi,
     #contacto {
       position: relative;
-      z-index: 1;               /* Above fixed hero (z-index: 0) */
-      background: #000;         /* Opaque — hides hero as it scrolls under */
+      z-index: 1;
+      background: #000;
     }
+
+    /* Sección sobre-mí en blanco */
+    #sobre-mi { background: #fff; }
 
     /* ═══════════════════════════════════════
        WORK SECTION
@@ -473,9 +476,9 @@
       font-weight: 400;
       letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
+      color: rgba(0,0,0,0.35);
       display: block;
-      margin-bottom: 3.5rem;
+      margin-bottom: 2rem;
     }
 
     .about-statement {
@@ -483,46 +486,22 @@
       font-weight: 900;
       letter-spacing: -0.05em;
       line-height: 0.95;
-      color: var(--white);
-      margin-bottom: 3rem;
+      color: #000;
+      margin-bottom: 2rem;
     }
 
     .about-statement .muted {
-      color: rgba(255,255,255,0.2);
+      color: rgba(0,0,0,0.18);
     }
 
     .about-body {
       font-size: clamp(1rem, 2vw, 1.55rem);
       font-weight: 500;
-      color: rgba(255,255,255,0.88);
+      color: rgba(0,0,0,0.82);
       line-height: 1.5;
       text-align: justify;
     }
 
-    .about-stats {
-      display: flex;
-      gap: 4rem;
-      margin-top: 4rem;
-      padding-top: 3rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .stat-num {
-      font-size: 2.5rem;
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.58rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.22);
-      margin-top: 0.4rem;
-    }
 
     /* ═══════════════════════════════════════
        CONTACT
@@ -701,21 +680,6 @@
 
     </div>
 
-    <!-- Stats: ancho completo debajo del grid -->
-    <div class="about-stats">
-      <div>
-        <div class="stat-num">8+</div>
-        <div class="stat-label">Años</div>
-      </div>
-      <div>
-        <div class="stat-num">120</div>
-        <div class="stat-label">Proyectos</div>
-      </div>
-      <div>
-        <div class="stat-num">14</div>
-        <div class="stat-label">Países</div>
-      </div>
-    </div>
   </section>
 
   <!-- ══════════════════════════════════════
