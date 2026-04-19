@@ -128,7 +128,7 @@
       inset: 0;
       background-image: url('hero-desktop.jpg');
       background-size: cover;
-      background-position: center;
+      background-position: center top;
       background-repeat: no-repeat;
     }
 
@@ -318,6 +318,15 @@
       background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
       opacity: 0;
       transition: opacity 0.4s ease;
+      pointer-events: none;     /* Clicks pasan al iframe/video debajo */
+    }
+
+    /* iframe embed — mantiene 16:9 sin distorsión */
+    .video-card iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
     }
 
     .video-card:hover .card-overlay { opacity: 1; }
@@ -592,9 +601,15 @@
 
       <div class="video-card">
         <span class="card-index">01</span>
-        <video autoplay loop muted playsinline>
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
-        </video>
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/2yYhRPN9fdk?si=GuOGlQsq0osXFEih&rel=0"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
         <div class="card-overlay">
           <div class="card-meta">
             <p class="card-cat">Comercial</p>
