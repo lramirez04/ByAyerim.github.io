@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayerim Parra</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #000000;
+      --white:    #ffffff;
+      --dim:      rgba(255,255,255,0.42);
+      --dimmer:   rgba(255,255,255,0.18);
+      --ghost:    rgba(255,255,255,0.07);
+      --gap:      14px;
+      --font:     'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none; /* custom cursor */
+    }
+
+    /* ═══════════════════════════════════════
+       CUSTOM CURSOR
+    ═══════════════════════════════════════ */
+    .cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: #ebac1a;
+      border: 1.5px solid rgba(255,255,255,0.85);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, opacity 0.2s, background 0.2s;
+    }
+    .cursor.is-hovering {
+      width: 48px;
+      height: 48px;
+      opacity: 0.35;
+    }
+
+    /* ═══════════════════════════════════════
+       NAV — ultra-thin fixed strip
+    ═══════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2rem;
+      /* No background — nav floats over everything */
+    }
+
+    .nav-logo {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-right a {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-right a:hover { color: var(--white); }
+
+    /* Nav sobre fondo blanco */
+    nav.nav--light .nav-logo { color: #a76500; }
+    nav.nav--light .nav-right a { color: rgba(167,101,0,0.55); }
+    nav.nav--light .nav-right a:hover { color: #a76500; }
+
+    /* Thin horizontal rule under nav (barely visible) */
+    nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 2rem; right: 2rem;
+      height: 1px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* ═══════════════════════════════════════
+       HERO — fixed background (parallax base)
+    ═══════════════════════════════════════ */
+    .hero {
+      position: fixed;          /* Stays pinned while content scrolls over */
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #0a0a0a;
+      z-index: 0;               /* Below all scrollable content */
+    }
+
+    /* Responsive background image */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/hero-desktop.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+
+    @media (max-width: 640px) {
+      .hero-bg {
+        background-image: url('assets/hero-mobile.jpg');
+        background-position: center center;
+      }
+    }
+
+    /* vignette */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0,0,0,0.75) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,0,0,0.45) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 2rem 2.5rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Huge name — the entire hero IS the nameplate */
+    .hero-name {
+      font-size: clamp(4.5rem, 14vw, 13rem);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 0.88;
+      color: var(--white);
+      display: block;
+      /* Text slightly split across two lines for drama */
+    }
+
+    .hero-meta {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-role {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .hero-cta {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.22);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .hero-cta:hover { color: var(--white); border-color: var(--white); }
+
+    /* Scroll indicator — thin vertical line on right edge */
+    .scroll-indicator {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 2;
+    }
+    .scroll-indicator span {
+      font-size: 0.52rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      writing-mode: vertical-rl;
+    }
+    .scroll-line-indicator {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.35));
+      animation: grow-line 2s ease-in-out infinite alternate;
+    }
+    @keyframes grow-line {
+      from { transform: scaleY(0.4); opacity: 0.3; }
+      to   { transform: scaleY(1);   opacity: 0.8; }
+    }
+
+    /* ═══════════════════════════════════════
+       HERO SPACER — reserves 100vh so hero
+       is the only thing visible on load
+    ═══════════════════════════════════════ */
+    .hero-spacer {
+      height: 100vh;
+      position: relative;
+      z-index: 1;               /* Sits above fixed hero but is transparent */
+      pointer-events: none;     /* Clicks pass through to hero-content */
+      background: transparent;
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLLABLE CONTENT — slides over hero
+    ═══════════════════════════════════════ */
+    #trabajo,
+    #sobre-mi,
+    #contacto {
+      position: relative;
+      z-index: 1;
+      background: #000;
+    }
+
+    /* Sección sobre-mí en blanco */
+    #sobre-mi { background: #fff; }
+
+    /* Sección trabajo: naranja con desenfoque gaussiano y 20% opacidad */
+    #trabajo {
+      background: rgba(167, 101, 0, 0.20);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    #trabajo .section-label-text {
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ═══════════════════════════════════════
+       WORK SECTION
+    ═══════════════════════════════════════ */
+    #trabajo { margin-top: 0; }
+
+    .section-bar {
+      padding: 4.5rem 2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .section-label-text {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .section-tagline {
+      font-size: clamp(2.25rem, 7vw, 6.5rem);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 1.2;
+      color: var(--white);
+      padding: 1rem 2rem 3rem;
+    }
+
+    /* ── Marquee "Selected Works" ── */
+    .section-label-marquee {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+    }
+
+    .section-label-anchor {
+      visibility: hidden;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      display: block;
+      white-space: nowrap;
+    }
+
+    .section-label-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      animation: marquee-works 14s linear infinite;
+    }
+
+    .section-label-track span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.82);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @keyframes marquee-works {
+      from { transform: translateY(-50%) translateX(0); }
+      to   { transform: translateY(-50%) translateX(-50%); }
+    }
+
+    /* ── SYMMETRIC 2-COLUMN GRID — sarahkhorbtli style ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+      padding: 0 3.5rem;
+    }
+
+    .video-card        { grid-column: span 1; }
+    .video-card.wide   { grid-column: span 2; }
+
+    /* ── SINGLE CARD ── */
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      background: #0d0d0d;
+    }
+
+    .video-card video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* Keep 16:9 for normal cards, 2.35:1 for full-width */
+      aspect-ratio: 16 / 9;
+      filter: saturate(0.8) brightness(0.9);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.5s ease;
+    }
+
+    .video-card:hover video {
+      transform: scale(1.04);
+      filter: saturate(1) brightness(1);
+    }
+
+    /* Reveal overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;     /* Clicks pasan al iframe/video debajo */
+    }
+
+    /* iframe embed — mantiene 16:9 sin distorsión */
+    .video-card iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+    }
+
+    /* ── YouTube facade ── */
+    .yt-facade {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .yt-facade::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.3s;
+    }
+
+    .yt-facade:hover::after { background: rgba(0,0,0,0.1); }
+
+    .yt-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 58px; height: 58px;
+      border: 1.5px solid rgba(255,255,255,0.75);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      transition: border-color 0.3s, transform 0.3s, background 0.3s;
+    }
+
+    .yt-facade:hover .yt-play {
+      border-color: var(--white);
+      transform: translate(-50%, -50%) scale(1.1);
+      background: rgba(0,0,0,0.45);
+    }
+
+    .yt-play svg {
+      width: 18px; height: 18px;
+      fill: var(--white);
+      margin-left: 3px; /* centrado óptico del triángulo */
+    }
+
+    .video-card:hover .card-overlay { opacity: 1; }
+
+    .card-meta {
+      transform: translateY(10px);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .video-card:hover .card-meta { transform: translateY(0); }
+
+    .card-cat {
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-title {
+      font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.15;
+    }
+
+    .card-role-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.3rem;
+    }
+
+    .card-role {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .card-year {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+    }
+
+    /* Small card index number (top-left) — always visible */
+    .card-index {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.22);
+      z-index: 2;
+    }
+
+    /* ═══════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════ */
+    #sobre-mi {
+      padding: 9rem 3.5rem 8rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.55fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-image {
+      padding-top: 3rem; /* Empuja la foto al nivel de la primera línea del body */
+    }
+
+    .about-image img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      #sobre-mi { padding: 5rem 1.25rem 4rem; }
+    }
+
+    /* ── Marquee "Who I Am!" contenido en su propio espacio ── */
+    .about-eyebrow {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+    }
+
+    /* Ancho ancla invisible — establece el tamaño natural del texto */
+    .about-eyebrow-anchor {
+      visibility: hidden;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      display: block;
+      white-space: nowrap;
+    }
+
+    /* Track que se desliza dentro del espacio del ancla */
+    .about-eyebrow-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      display: flex;
+      gap: 1.8rem;
+      width: max-content;
+      animation: marquee-who 10s linear infinite;
+    }
+
+    .about-eyebrow-track span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #ebac1a;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @keyframes marquee-who {
+      from { transform: translateY(-50%) translateX(0); }
+      to   { transform: translateY(-50%) translateX(-50%); }
+    }
+
+    .about-statement {
+      font-size: clamp(2rem, 5.5vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      color: #000;
+      margin-bottom: 2rem;
+    }
+
+    .about-statement .muted {
+      color: rgba(0,0,0,0.18);
+    }
+
+    .about-body {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.2rem, 2.4vw, 1.85rem);
+      font-weight: 500;
+      color: rgba(0,0,0,0.82);
+      line-height: 1.45;
+      text-align: justify;
+    }
+
+    /* ── Word reveal on scroll ── */
+    .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .word.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .about-email-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.85rem 2rem;
+      background: #e8e8e8;
+      color: #111;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      box-shadow: 0 0 0 0 transparent;
+      transition: box-shadow 0.4s ease, color 0.15s ease;
+    }
+
+    /* Relleno negro de izquierda a derecha */
+    .about-email-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #111;
+      border-radius: inherit;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+      z-index: 0;
+    }
+    .about-email-btn:hover::before { transform: scaleX(1); }
+
+    .about-email-btn span {
+      position: relative;
+      z-index: 1;
+    }
+    .about-email-btn:hover {
+      color: #fff;
+    }
+
+
+    /* ═══════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════ */
+    #contacto {
+      padding: 5rem 3.5rem 6rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .contact-layout {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    /* Foto pequeña */
+    .contact-photo {
+      width: 110px;
+      height: 140px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 10px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    /* Tagline junto a la foto */
+    .contact-tagline {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.55;
+      max-width: 180px;
+      flex-shrink: 0;
+    }
+
+    /* Píldora oscura con el email */
+    .contact-pill {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      border-radius: 999px;
+      padding: 2.2rem 3rem;
+      font-size: clamp(1.4rem, 3.2vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      text-decoration: none;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      box-shadow: 0 0 0 0 transparent;
+      transition: box-shadow 0.4s ease;
+    }
+
+    /* Barra naranja que se llena de izquierda a derecha */
+    .contact-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #ebac1a;
+      border-radius: inherit;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+      z-index: 0;
+    }
+    .contact-pill:hover::before { transform: scaleX(1); }
+    .contact-pill:hover {
+      box-shadow:
+        0 0 0 1px rgba(235, 172, 26, 0.6),
+        0 0 18px 4px rgba(235, 172, 26, 0.45),
+        0 0 50px 12px rgba(235, 172, 26, 0.25),
+        0 0 90px 24px rgba(235, 172, 26, 0.12);
+      transition: box-shadow 0.4s ease;
+    }
+
+    /* El texto queda por encima del relleno */
+    .contact-pill span,
+    .contact-pill .at {
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-pill .at { color: #ebac1a; }
+    .contact-pill:hover .at { color: var(--white); transition: color 0.3s ease 0.15s; }
+
+    /* Footer: redes + copyright */
+    .contact-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 3rem;
+    }
+
+    .social-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .social-row a {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+      width: fit-content;
+    }
+    .social-row a:hover { color: var(--white); }
+
+    .copyright {
+      font-size: 0.58rem;
+      color: rgba(255,255,255,0.1);
+      letter-spacing: 0.1em;
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 1023px) {
+      .video-grid { padding: 0 2rem; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-right a { display: none; }
+      .nav-right a:last-child { display: block; }
+
+      .hero-content { padding: 0 1.25rem 2rem; }
+      .hero-name { font-size: clamp(3.5rem, 18vw, 6rem); }
+      .scroll-indicator { display: none; }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1.25rem;
+      }
+
+      #sobre-mi { padding: 5rem 1.25rem 4rem; }
+      .about-stats { flex-direction: column; gap: 2rem; }
+
+      #contacto { padding: 4rem 1.25rem 5rem; }
+      .contact-layout { flex-wrap: wrap; gap: 1.5rem; }
+      .contact-photo { width: 80px; height: 100px; }
+      .contact-tagline { display: none; }
+      .contact-pill { flex: 1; min-width: 0; padding: 1.5rem 1.5rem; font-size: clamp(1rem, 5vw, 1.8rem); }
+      .contact-footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; margin-top: 2rem; }
+      .copyright { text-align: left; }
+
+      .section-bar { padding: 4rem 1.25rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- ══════════════════════════════════════
+       NAV
+  ══════════════════════════════════════ -->
+  <nav>
+    <a class="nav-logo" href="#">Ayerim Parra</a>
+    <div class="nav-right">
+      <a href="#trabajo">Trabajo</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO  ·  100vh full-bleed video
+  ══════════════════════════════════════ -->
+  <section class="hero">
+
+    <!-- Responsive background image — swap src in CSS for desktop / mobile -->
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <span class="hero-name">Ayerim<br>Parra</span>
+      <div class="hero-meta">
+        <span class="hero-role">Videógrafa &amp; Directora Visual · Venezuela</span>
+        <a class="hero-cta" href="#contacto">Hablemos →</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="scroll-line-indicator"></div>
+      <span>Scroll</span>
+    </div>
+
+  </section>
+
+  <!-- Spacer: keeps hero visible on load; content begins after 100vh -->
+  <div class="hero-spacer"></div>
+
+  <!-- ══════════════════════════════════════
+       SOBRE MÍ
+  ══════════════════════════════════════ -->
+  <section id="sobre-mi">
+    <div class="about-grid">
+
+      <!-- Columna izquierda: foto -->
+      <div class="about-image">
+        <img src="assets/about-photo.jpg" alt="Ayerim Parra" />
+      </div>
+
+      <!-- Columna derecha: texto -->
+      <div class="about-text">
+        <div class="about-eyebrow">
+          <span class="about-eyebrow-anchor">Who I Am!</span>
+          <div class="about-eyebrow-track">
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+            <span>Who I Am!</span>
+          </div>
+        </div>
+        <p class="about-body">
+          A dedicated Visual Creative and Video Editor driven by the art of storytelling
+          and the power of imagery. With a comprehensive background in film production—from
+          Lighting to Assistant Director—I bring a multi-dimensional perspective to the editing
+          suite. I specialize in crafting compelling digital experiences where visual
+          aesthetics and rhythmic precision converge to engage and inspire the viewer
+        </p>
+        <a class="about-email-btn" href="mailto:email@email.com"><span>Email me →</span></a>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TRABAJO  ·  Asymmetric always-on grid
+  ══════════════════════════════════════ -->
+  <section id="trabajo">
+
+    <div class="section-bar">
+      <div class="section-label-marquee">
+        <span class="section-label-anchor">Selected Works</span>
+        <div class="section-label-track">
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+        </div>
+      </div>
+      <span class="section-label-text">2018 / 2026</span>
+    </div>
+
+    <p class="section-tagline">Make an impact with<br>stories that matters</p>
+
+    <div class="video-grid">
+
+      <div class="video-card">
+        <span class="card-index">01</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/2yYhRPN9fdk?si=GuOGlQsq0osXFEih&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/2yYhRPN9fdk/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">Shortfilm</p>
+            <p class="card-title">Mireyita</p>
+            <div class="card-role-row">
+              <span class="card-role">Camera operator and puller</span>
+              <span class="card-year">2022</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal -->
+      <div class="video-card">
+        <span class="card-index">02</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/uH1dLidfCPE?si=H5XSam-bIHQjnkjK&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/uH1dLidfCPE/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">Corporative</p>
+            <p class="card-title">SATA Congress</p>
+            <div class="card-role-row">
+              <span class="card-role">Video editor</span>
+              <span class="card-year">2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal -->
+      <div class="video-card wide">
+        <span class="card-index">03</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube-nocookie.com/embed/nCcbyxSG20c?si=hYNxf3-7ya7KEr4C&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/nCcbyxSG20c/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">Documentary</p>
+            <p class="card-title">You married your bestfriend</p>
+            <div class="card-role-row">
+              <span class="card-role">Video editor</span>
+              <span class="card-year">2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal -->
+
+      <!-- Normal -->
+      <div class="video-card">
+        <span class="card-index">05</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube.com/embed/dDAExTNaERo?si=qX6tS7TjPsq9Aa9q&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/dDAExTNaERo/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">Shortfilm</p>
+            <p class="card-title">Lazos</p>
+            <div class="card-role-row">
+              <span class="card-role">Assistant director</span>
+              <span class="card-year">2018</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <span class="card-index">06</span>
+        <div class="yt-facade"
+             data-src="https://www.youtube.com/embed/STJNMT_nNFA?si=BR0TDG-PMG_mKf0G&rel=0&autoplay=1"
+             style="background-image: url('https://img.youtube.com/vi/STJNMT_nNFA/maxresdefault.jpg')">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="card-overlay">
+          <div class="card-meta">
+            <p class="card-cat">Content Creation</p>
+            <p class="card-title">48 Horas Sin Suministros en Suiza</p>
+            <div class="card-role-row">
+              <span class="card-role">Video Editor</span>
+              <span class="card-year">2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CONTACTO
+  ══════════════════════════════════════ -->
+  <section id="contacto">
+
+    <!-- Fila principal: foto + tagline + píldora email -->
+    <div class="contact-layout">
+      <img class="contact-photo" src="assets/about-photo.jpg" alt="Ayerim Parra" />
+      <p class="contact-tagline">Creemos algo<br>extraordinario juntos.</p>
+      <a class="contact-pill" href="mailto:hola@ayerimparra.com">
+        <span>hola<span class="at">@</span>ayerimparra.com</span>
+      </a>
+    </div>
+
+    <!-- Footer: redes + copyright -->
+    <div class="contact-footer">
+      <nav class="social-row" aria-label="Redes sociales">
+        <a href="#" target="_blank" rel="noopene
