@@ -41,23 +41,20 @@
     ═══════════════════════════════════════ */
     .cursor {
       position: fixed;
-      width: 8px;
-      height: 8px;
-      background: var(--white);
+      width: 10px;
+      height: 10px;
+      background: #a76500;
+      border: 1.5px solid rgba(255,255,255,0.85);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, opacity 0.2s;
-      mix-blend-mode: difference;
+      transition: width 0.2s, height 0.2s, opacity 0.2s, background 0.2s;
     }
     .cursor.is-hovering {
       width: 48px;
       height: 48px;
-      opacity: 0.15;
-    }
-    .cursor.is-on-card {
-      background: #a76500;
+      opacity: 0.35;
     }
 
     /* ═══════════════════════════════════════
@@ -982,11 +979,6 @@
       el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
     });
 
-    // Color naranja solo al pasar por los video cards
-    document.querySelectorAll('.video-card').forEach(card => {
-      card.addEventListener('mouseenter', () => cursor.classList.add('is-on-card'));
-      card.addEventListener('mouseleave', () => cursor.classList.remove('is-on-card'));
-    });
 
     /* ── IntersectionObserver: play/pause videos off-screen ── */
     const videoCards = document.querySelectorAll('.video-card video');
