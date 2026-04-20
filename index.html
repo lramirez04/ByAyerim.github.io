@@ -1060,4 +1060,121 @@
     <!-- Footer: redes + copyright -->
     <div class="contact-footer">
       <nav class="social-row" aria-label="Redes sociales">
-        <a href="#" target="_blank" rel="noopener">In
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+        <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+      </nav>
+      <p class="copyright">
+        © 2026 Ayerim Parra · Venezuela
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════ -->
+  <script>
+    /* ── Custom cursor ── */
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      curX += (mouseX - curX) * 0.12;
+      curY += (mouseY - curY) * 0.12;
+      cursor.style.left = curX + 'px';
+      cursor.style.top  = curY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    const hoverTargets = document.querySelectorAll('a, .video-card, button');
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
+    });
+
+    /* ── Nav color: naranja sobre fondo blanco, blanco en el resto ── */
+    const navEl     = document.querySelector('nav');
+    const sobreMiEl = document.getElementById('sobre-mi');
+
+    function updateNavColor() {
+      if (!navEl || !sobreMiEl) return;
+      const navH      = navEl.offsetHeight;
+      const scrollY   = window.scrollY;
+      const sobreTop  = sobreMiEl.offsetTop;
+      const sobreBot  = sobreTop + sobreMiEl.offsetHeight;
+      const isOverWhite = (scrollY + navH >= sobreTop) && (scrollY < sobreBot);
+      navEl.classList.toggle('nav--light', isOverWhite);
+    }
+
+    window.addEventListener('scroll', updateNavColor, { passive: true });
+    updateNavColor();
+
+    /* ── IntersectionObserver: play/pause videos off-screen ── */
+    const videoCards = document.querySelectorAll('.video-card video');
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.isIntersecting
+          ? entry.target.play().catch(() => {})
+          : entry.target.pause();
+      });
+    }, { threshold: 0.1 });
+    videoCards.forEach(v => videoObserver.observe(v));
+
+    /* ── Word reveal on scroll — about-body ── */
+    const aboutBody = document.querySelector('.about-body');
+    if (aboutBody) {
+      const words = aboutBody.innerText.trim().split(/\s+/);
+      aboutBody.innerHTML = words
+        .map(w => `<span class="word">${w}</span>`)
+        .join(' ');
+
+      const spans = Array.from(aboutBody.querySelectorAll('.word'));
+
+      function updateWords() {
+        const rect = aboutBody.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        const start    = vh;
+        const end      = vh * 0.2;
+        const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+        const visibleCount = Math.round(progress * spans.length);
+        spans.forEach((span, i) => {
+          i < visibleCount ? span.classList.add('visible') : span.classList.remove('visible');
+        });
+      }
+
+      window.addEventListener('scroll', updateWords, { passive: true });
+      updateWords();
+    }
+
+    /* ── YouTube facade: clic carga el iframe con autoplay ── */
+    document.querySelectorAll('.yt-facade').forEach(facade => {
+      facade.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = facade.dataset.src;
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        iframe.setAttribute('allowfullscreen', '');
+        facade.replaceWith(iframe);
+      });
+    });
+
+    /* ── Subtle parallax on hero name ── */
+    const heroName = document.querySelector('.hero-name');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroName.style.transform = `translateY(${y * 0.18}px)`;
+        heroName.style.opacity   = 1 - (y / (window.innerHeight * 0.7));
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
