@@ -43,7 +43,7 @@
       position: fixed;
       width: 10px;
       height: 10px;
-      background: #ebac1a;
+      background: #a76500;
       border: 1.5px solid rgba(255,255,255,0.85);
       border-radius: 50%;
       pointer-events: none;
@@ -487,51 +487,14 @@
       #sobre-mi { padding: 5rem 1.25rem 4rem; }
     }
 
-    /* ── Marquee "Who I Am!" contenido en su propio espacio ── */
     .about-eyebrow {
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 2rem;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
-      mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
-    }
-
-    /* Ancho ancla invisible — establece el tamaño natural del texto */
-    .about-eyebrow-anchor {
-      visibility: hidden;
       font-size: 0.85rem;
       font-weight: 500;
       letter-spacing: 0.25em;
       text-transform: uppercase;
+      color: #a76500;
       display: block;
-      white-space: nowrap;
-    }
-
-    /* Track que se desliza dentro del espacio del ancla */
-    .about-eyebrow-track {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      display: flex;
-      gap: 1.8rem;
-      width: max-content;
-      animation: marquee-who 5s linear infinite;
-    }
-
-    .about-eyebrow-track span {
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: #ebac1a;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    @keyframes marquee-who {
-      from { transform: translateY(-50%) translateX(0); }
-      to   { transform: translateY(-50%) translateX(-50%); }
+      margin-bottom: 2rem;
     }
 
     .about-statement {
@@ -828,19 +791,7 @@
 
       <!-- Columna derecha: texto -->
       <div class="about-text">
-        <div class="about-eyebrow">
-          <span class="about-eyebrow-anchor">Who I Am!</span>
-          <div class="about-eyebrow-track">
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-            <span>Who I Am!</span>
-          </div>
-        </div>
+        <span class="about-eyebrow">Who I Am!</span>
         <p class="about-body">
           A dedicated Visual Creative and Video Editor driven by the art of storytelling
           and the power of imagery. With a comprehensive background in film production—from
@@ -1091,40 +1042,4 @@
 
         spans.forEach((span, i) => {
           if (i < visibleCount) {
-            span.classList.add('visible');
-          } else {
-            span.classList.remove('visible');
-          }
-        });
-      }
-
-      window.addEventListener('scroll', updateWords, { passive: true });
-      updateWords(); // estado inicial
-    }
-
-    /* ── YouTube facade: clic carga el iframe con autoplay ── */
-    document.querySelectorAll('.yt-facade').forEach(facade => {
-      facade.addEventListener('click', () => {
-        const iframe = document.createElement('iframe');
-        iframe.src = facade.dataset.src;
-        iframe.setAttribute('frameborder', '0');
-        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
-        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-        iframe.setAttribute('allowfullscreen', '');
-        facade.replaceWith(iframe);
-      });
-    });
-
-    /* ── Subtle parallax on hero name ── */
-    const heroName = document.querySelector('.hero-name');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight) {
-        heroName.style.transform = `translateY(${y * 0.18}px)`;
-        heroName.style.opacity   = 1 - (y / (window.innerHeight * 0.7));
-      }
-    }, { passive: true });
-  </script>
-
-</body>
-</html>
+            span.class
