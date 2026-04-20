@@ -291,6 +291,59 @@
       color: rgba(255,255,255,0.25);
     }
 
+    .section-tagline {
+      font-size: clamp(4.5rem, 14vw, 13rem);
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      line-height: 0.88;
+      color: var(--white);
+      padding: 1rem 2rem 3rem;
+    }
+
+    /* ── Marquee "Selected Works" ── */
+    .section-label-marquee {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+    }
+
+    .section-label-anchor {
+      visibility: hidden;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      display: block;
+      white-space: nowrap;
+    }
+
+    .section-label-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      animation: marquee-works 7s linear infinite;
+    }
+
+    .section-label-track span {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @keyframes marquee-works {
+      from { transform: translateY(-50%) translateX(0); }
+      to   { transform: translateY(-50%) translateX(-50%); }
+    }
+
     /* ── SYMMETRIC 2-COLUMN GRID — sarahkhorbtli style ── */
     .video-grid {
       display: grid;
@@ -857,9 +910,23 @@
   <section id="trabajo">
 
     <div class="section-bar">
-      <span class="section-label-text">Trabajo selecto</span>
+      <div class="section-label-marquee">
+        <span class="section-label-anchor">Selected Works</span>
+        <div class="section-label-track">
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+          <span>Selected Works</span>
+        </div>
+      </div>
       <span class="section-label-text">06 — 2024 / 2025</span>
     </div>
+
+    <p class="section-tagline">Make an impact with<br>stories that matters</p>
 
     <div class="video-grid">
 
