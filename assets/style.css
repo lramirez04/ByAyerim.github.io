@@ -643,7 +643,7 @@ nav::after {
 .bio-slider {
   display: grid;
   grid-template-columns: 1fr 48px 1fr;
-  min-height: 480px;
+  min-height: clamp(480px, 60vh, 850px);
   margin: 2.5rem 0 0;
   border-radius: 0;
   overflow: hidden;
