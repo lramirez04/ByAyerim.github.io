@@ -644,7 +644,7 @@ nav::after {
   display: grid;
   grid-template-columns: 1fr 48px 1fr;
   min-height: 480px;
-  margin: 0 14px 14px;
+  margin: 1.5rem 14px 14px;
   border-radius: 12px;
   overflow: hidden;
 }
