@@ -573,21 +573,23 @@ nav::after {
 
 .about-body {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
-  font-weight: 700;
+  font-size: clamp(1.2rem, 2.4vw, 1.85rem);
+  font-weight: 500;
   color: rgba(0,0,0,0.82);
-  line-height: 1.35;
-  text-align: left;
+  line-height: 1.45;
+  text-align: justify;
 }
 
 /* ── Word reveal on scroll ── */
 .word {
   display: inline-block;
-  opacity: 0.18;
-  transition: opacity 0.25s ease;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
 .word.visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .about-email-btn {

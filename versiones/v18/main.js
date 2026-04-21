@@ -61,12 +61,14 @@ if (aboutBody) {
   const spans = Array.from(aboutBody.querySelectorAll('.word'));
 
   function updateWords() {
-    const threshold = window.innerHeight * 0.78;
-    spans.forEach(span => {
-      const top = span.getBoundingClientRect().top;
-      top < threshold
-        ? span.classList.add('visible')
-        : span.classList.remove('visible');
+    const rect = aboutBody.getBoundingClientRect();
+    const vh   = window.innerHeight;
+    const start    = vh;
+    const end      = vh * 0.2;
+    const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+    const visibleCount = Math.round(progress * spans.length);
+    spans.forEach((span, i) => {
+      i < visibleCount ? span.classList.add('visible') : span.classList.remove('visible');
     });
   }
 
