@@ -115,7 +115,7 @@ nav::after {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('hero-desktop.jpg');
+  background-image: url('img/hero-desktop.jpg');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -123,7 +123,7 @@ nav::after {
 
 @media (max-width: 640px) {
   .hero-bg {
-    background-image: url('hero-mobile.jpg');
+    background-image: url('img/hero-mobile.jpg');
     background-position: center center;
   }
 }
