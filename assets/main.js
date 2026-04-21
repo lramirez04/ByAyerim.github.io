@@ -87,6 +87,23 @@ document.querySelectorAll('.yt-facade').forEach(facade => {
   });
 });
 
+/* ── Bio Slider ── */
+const bioNavBtns = document.querySelectorAll('.bio-nav-btn');
+const bioSlides  = document.querySelectorAll('.bio-slide');
+const bioImgs    = document.querySelectorAll('.bio-img');
+
+bioNavBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = parseInt(btn.dataset.target);
+    bioNavBtns.forEach(b => b.classList.remove('active'));
+    bioSlides.forEach(s  => s.classList.remove('active'));
+    bioImgs.forEach(i    => i.classList.remove('active'));
+    btn.classList.add('active');
+    bioSlides[target].classList.add('active');
+    bioImgs[target].classList.add('active');
+  });
+});
+
 /* ── Subtle parallax on hero name ── */
 const heroName = document.querySelector('.hero-name');
 window.addEventListener('scroll', () => {
