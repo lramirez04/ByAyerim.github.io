@@ -575,7 +575,7 @@ nav::after {
   font-family: 'Inter', sans-serif;
   font-size: clamp(1.3rem, 2.8vw, 2.1rem);
   font-weight: 700;
-  color: #000;
+  color: rgba(0,0,0,0.82);
   line-height: 1.4;
   text-align: justify;
 }
@@ -780,4 +780,4 @@ nav::after {
 
   .section-bar { padding: 4rem 1.25rem 1.5rem; }
 }
-                                                                                  
+                                                             
