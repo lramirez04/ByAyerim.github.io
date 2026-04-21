@@ -669,7 +669,7 @@ nav::after {
   margin-left: auto;
   background: #111;
   border-radius: 999px;
-  padding: 1.6rem 2.8rem;
+  padding: 2.4rem 2.8rem;
   font-size: clamp(1.4rem, 3.2vw, 3.8rem);
   font-weight: 900;
   letter-spacing: -0.04em;
