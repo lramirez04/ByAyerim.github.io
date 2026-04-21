@@ -498,11 +498,26 @@ nav::after {
   padding-top: 3rem;
 }
 
-.about-image img {
+.about-image-wrap {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.about-image-wrap img:first-child {
   width: 100%;
   display: block;
   object-fit: cover;
   border-radius: 12px;
+}
+
+.about-bubble {
+  position: absolute;
+  top: 6%;
+  left: -8%;
+  width: 55%;
+  transform: rotate(-8deg);
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
