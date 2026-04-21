@@ -573,11 +573,11 @@ nav::after {
 
 .about-body {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(1.3rem, 2.8vw, 2.1rem);
+  font-size: clamp(1.5rem, 3.2vw, 2.6rem);
   font-weight: 700;
   color: rgba(0,0,0,0.82);
-  line-height: 1.4;
-  text-align: justify;
+  line-height: 1.35;
+  text-align: left;
 }
 
 /* ── Word reveal on scroll ── */
@@ -663,13 +663,13 @@ nav::after {
 }
 
 .contact-pill {
-  display: inline-flex;
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   background: #111;
   border-radius: 999px;
-  padding: 1.6rem 2.8rem;
+  padding: 2.2rem 3rem;
   font-size: clamp(1.4rem, 3.2vw, 3.8rem);
   font-weight: 900;
   letter-spacing: -0.04em;
