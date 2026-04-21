@@ -87,22 +87,54 @@ document.querySelectorAll('.yt-facade').forEach(facade => {
   });
 });
 
-/* ── Bio Slider ── */
-const bioNavBtns = document.querySelectorAll('.bio-nav-btn');
-const bioSlides  = document.querySelectorAll('.bio-slide');
-const bioImgs    = document.querySelectorAll('.bio-img');
+/* ── Bio Slider con barra de progreso tipo YouTube ── */
+const bioSlides      = document.querySelectorAll('.bio-slide');
+const bioImgs        = document.querySelectorAll('.bio-img');
+const bioFill        = document.getElementById('bioProgressFill');
 
-bioNavBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = parseInt(btn.dataset.target);
-    bioNavBtns.forEach(b => b.classList.remove('active'));
-    bioSlides.forEach(s  => s.classList.remove('active'));
-    bioImgs.forEach(i    => i.classList.remove('active'));
-    btn.classList.add('active');
-    bioSlides[target].classList.add('active');
-    bioImgs[target].classList.add('active');
-  });
-});
+const SLIDE_DURATION = 5000;  // 5s por slide
+const TOTAL_SLIDES   = 3;
+let currentSlide     = 0;
+let startTime        = null;
+let rafId            = null;
+
+function goToSlide(index) {
+  bioSlides.forEach(s => s.classList.remove('active'));
+  bioImgs.forEach(i   => i.classList.remove('active'));
+  bioSlides[index].classList.add('active');
+  bioImgs[index].classList.add('active');
+}
+
+function animateProgress(timestamp) {
+  if (!startTime) startTime = timestamp;
+  const elapsed  = timestamp - startTime;
+  const total    = SLIDE_DURATION * TOTAL_SLIDES;
+  const progress = Math.min(elapsed / total, 1);
+
+  bioFill.style.width = (progress * 100) + '%';
+
+  // Cambio de slide
+  const slide = Math.min(Math.floor(elapsed / SLIDE_DURATION), TOTAL_SLIDES - 1);
+  if (slide !== currentSlide) {
+    currentSlide = slide;
+    goToSlide(currentSlide);
+  }
+
+  if (elapsed < total) {
+    rafId = requestAnimationFrame(animateProgress);
+  } else {
+    // Reiniciar
+    currentSlide = 0;
+    startTime    = null;
+    goToSlide(0);
+    rafId = requestAnimationFrame(animateProgress);
+  }
+}
+
+if (bioFill) {
+  goToSlide(0);
+  rafId = requestAnimationFrame(animateProgress);
+}
 
 /* ── Subtle parallax on hero name ── */
 const heroName = document.querySelector('.hero-name');
