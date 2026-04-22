@@ -109,9 +109,12 @@ nav.nav--light .nav-social .social-sep { color: rgba(167,101,0,0.4); }
 }
 
 /* Nav sobre fondo blanco */
-nav.nav--light .nav-logo { opacity: 0; }
+nav.nav--light .nav-logo { opacity: 1; color: #a76500; }
 nav.nav--light .nav-right a,
 nav.nav--light .nav-social a { color: #a76500; }
+
+/* Nav logo se oculta solo cuando está sobre la imagen */
+nav.nav--hide-logo .nav-logo { opacity: 0; }
 
 nav::after {
   content: '';

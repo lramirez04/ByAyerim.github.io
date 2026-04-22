@@ -23,17 +23,28 @@ hoverTargets.forEach(el => {
 });
 
 /* ── Nav color: naranja sobre fondo blanco, blanco en el resto ── */
-const navEl     = document.querySelector('nav');
-const sobreMiEl = document.getElementById('sobre-mi');
+const navEl       = document.querySelector('nav');
+const sobreMiEl   = document.getElementById('sobre-mi');
+const aboutImgEl  = document.querySelector('.about-image');
 
 function updateNavColor() {
   if (!navEl || !sobreMiEl) return;
-  const navH      = navEl.offsetHeight;
-  const scrollY   = window.scrollY;
-  const sobreTop  = sobreMiEl.offsetTop;
-  const sobreBot  = sobreTop + sobreMiEl.offsetHeight;
+  const navH    = navEl.offsetHeight;
+  const scrollY = window.scrollY;
+
+  // nav--light: toda la sección #sobre-mi (links se vuelven naranjas)
+  const sobreTop    = sobreMiEl.offsetTop;
+  const sobreBot    = sobreTop + sobreMiEl.offsetHeight;
   const isOverWhite = (scrollY + navH >= sobreTop) && (scrollY < sobreBot);
   navEl.classList.toggle('nav--light', isOverWhite);
+
+  // nav--hide-logo: solo sobre el área de la imagen (.about-image)
+  if (aboutImgEl) {
+    const imgTop     = aboutImgEl.getBoundingClientRect().top + scrollY;
+    const imgBot     = imgTop + aboutImgEl.offsetHeight;
+    const isOverImg  = (scrollY + navH >= imgTop) && (scrollY < imgBot);
+    navEl.classList.toggle('nav--hide-logo', isOverImg);
+  }
 }
 
 window.addEventListener('scroll', updateNavColor, { passive: true });
