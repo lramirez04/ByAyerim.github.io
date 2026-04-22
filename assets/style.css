@@ -605,7 +605,7 @@ nav::after {
 .about-body {
   font-family: 'Inter', sans-serif;
   font-size: clamp(1.3rem, 2.8vw, 2.1rem);
-  font-weight: 500;
+  font-weight: 600;
   color: #000;
   line-height: 1.4;
   text-align: justify;
