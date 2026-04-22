@@ -85,24 +85,9 @@ nav.nav--light .nav-social a { color: #a76500; }
 }
 nav.nav--light .nav-social .social-sep { color: rgba(167,101,0,0.4); }
 
-.nav-logo {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: transparent;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav-right {
-  display: flex;
-  gap: 2.5rem;
-  align-items: center;
-  margin-left: auto;
-}
-
-.nav-right a {
+.nav-logo,
+.nav-right a,
+.nav-social a {
   font-size: 0.68rem;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -112,12 +97,21 @@ nav.nav--light .nav-social .social-sep { color: rgba(167,101,0,0.4); }
   transition: color 0.3s ease;
 }
 
-.nav-right a:hover { color: var(--white); }
+.nav-logo:hover,
+.nav-right a:hover,
+.nav-social a:hover { color: var(--white); }
+
+.nav-right {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  margin-left: auto;
+}
 
 /* Nav sobre fondo blanco */
-nav.nav--light .nav-logo { color: transparent; }
-nav.nav--light .nav-right a { color: #a76500; }
-nav.nav--light .nav-right a:hover { color: #a76500; }
+nav.nav--light .nav-logo,
+nav.nav--light .nav-right a,
+nav.nav--light .nav-social a { color: #a76500; }
 
 nav::after {
   content: '';
