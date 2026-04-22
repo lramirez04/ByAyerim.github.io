@@ -99,6 +99,7 @@ nav.nav--light .nav-social .social-sep { color: rgba(167,101,0,0.4); }
   display: flex;
   gap: 2.5rem;
   align-items: center;
+  margin-left: auto;
 }
 
 .nav-right a {
