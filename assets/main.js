@@ -108,6 +108,8 @@ const TOTAL_SLIDES   = 3;
 let currentSlide     = 0;
 let startTime        = null;
 let rafId            = null;
+let isPaused         = false;
+let pausedElapsed    = 0;
 
 function goToSlide(index) {
   bioSlides.forEach(s => s.classList.remove('active'));
@@ -117,7 +119,7 @@ function goToSlide(index) {
 }
 
 function animateProgress(timestamp) {
-  if (!startTime) startTime = timestamp;
+  if (!startTime) startTime = timestamp - pausedElapsed;
   const elapsed  = timestamp - startTime;
   const total    = SLIDE_DURATION * TOTAL_SLIDES;
   const progress = Math.min(elapsed / total, 1);
@@ -135,11 +137,28 @@ function animateProgress(timestamp) {
     rafId = requestAnimationFrame(animateProgress);
   } else {
     // Reiniciar
-    currentSlide = 0;
-    startTime    = null;
+    currentSlide  = 0;
+    startTime     = null;
+    pausedElapsed = 0;
     goToSlide(0);
     rafId = requestAnimationFrame(animateProgress);
   }
+}
+
+// Clic para pausar / reanudar
+const bioSlider = document.querySelector('.bio-slider');
+if (bioSlider) {
+  bioSlider.addEventListener('click', () => {
+    isPaused = !isPaused;
+    if (isPaused) {
+      cancelAnimationFrame(rafId);
+      // Guardar cuánto tiempo llevamos para reanudar desde ahí
+      pausedElapsed = performance.now() - startTime;
+    } else {
+      startTime = null;
+      rafId = requestAnimationFrame(animateProgress);
+    }
+  });
 }
 
 if (bioFill) {
