@@ -705,7 +705,7 @@ nav::after {
 
 .bio-slide-body {
   font-size: clamp(0.82rem, 1.1vw, 1.05rem);
-  font-weight: 600;
+  font-weight: 500;
   color: #000;
   line-height: 1.55;
 }
