@@ -779,6 +779,34 @@ nav::after {
   display: block;
 }
 
+/* ═══════════════════════════════════════
+   GALERÍA DE IMÁGENES
+═══════════════════════════════════════ */
+#galeria {
+  background: #e03000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  position: relative;
+}
+
+.galeria-stage {
+  width: 35vw;
+}
+
+.galeria-slide {
+  display: none;
+  width: 100%;
+  height: auto;
+  max-height: 75vh;
+  object-fit: contain;
+}
+
+.galeria-slide.active {
+  display: block;
+}
+
 .contact-tagline {
   font-size: 0.85rem;
   font-weight: 400;

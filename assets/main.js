@@ -166,6 +166,17 @@ if (bioFill) {
   rafId = requestAnimationFrame(animateProgress);
 }
 
+/* ── Galería de imágenes — cambio automático cada 2s ── */
+const galeriaSlides = document.querySelectorAll('.galeria-slide');
+if (galeriaSlides.length) {
+  let galeriaIndex = 0;
+  setInterval(() => {
+    galeriaSlides[galeriaIndex].classList.remove('active');
+    galeriaIndex = (galeriaIndex + 1) % galeriaSlides.length;
+    galeriaSlides[galeriaIndex].classList.add('active');
+  }, 2000);
+}
+
 /* ── Subtle parallax on hero name ── */
 const heroName = document.querySelector('.hero-name');
 window.addEventListener('scroll', () => {
