@@ -113,8 +113,8 @@ nav.nav--light .nav-logo { opacity: 1; color: #a76500; }
 nav.nav--light .nav-right a,
 nav.nav--light .nav-social a { color: #a76500; }
 
-/* Nav logo se oculta solo cuando está sobre la imagen */
-nav.nav--hide-logo .nav-logo { opacity: 0; }
+/* Nav se oculta completo a partir de la imagen */
+nav.nav--hide-logo { opacity: 0; pointer-events: none; }
 
 nav::after {
   content: '';

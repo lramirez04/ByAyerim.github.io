@@ -38,12 +38,11 @@ function updateNavColor() {
   const isOverWhite = (scrollY + navH >= sobreTop) && (scrollY < sobreBot);
   navEl.classList.toggle('nav--light', isOverWhite);
 
-  // nav--hide-logo: solo sobre el área de la imagen (.about-image)
+  // nav--hide-logo: se activa al llegar a la imagen y permanece hasta volver arriba
   if (aboutImgEl) {
-    const imgTop     = aboutImgEl.getBoundingClientRect().top + scrollY;
-    const imgBot     = imgTop + aboutImgEl.offsetHeight;
-    const isOverImg  = (scrollY + navH >= imgTop) && (scrollY < imgBot);
-    navEl.classList.toggle('nav--hide-logo', isOverImg);
+    const imgTop      = aboutImgEl.getBoundingClientRect().top + scrollY;
+    const isPastImage = (scrollY + navH >= imgTop);
+    navEl.classList.toggle('nav--hide-logo', isPastImage);
   }
 }
 
